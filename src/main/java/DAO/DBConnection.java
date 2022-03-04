@@ -6,14 +6,15 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.*;
 
 public class DBConnection {
-	private static String connectionString = "jdbc:postgresql://localhost:5432/Project0";
+	private static String connectionString = "";
 	private static String userName = "postgres";
-	private static String password = "1234";
+	private static String password = "";
 	private static Connection conn = null;
 	private final static Logger log = LogManager.getLogger(DBConnection.class);
 	
 	static {
-		
+		connectionString = "jdbc:postgresql://localhost:5432/Project1";
+		password = "1234";
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch(Exception e) {
@@ -23,7 +24,18 @@ public class DBConnection {
 			log.info("Estabilishing DB connection");
 			conn = DriverManager.getConnection(connectionString,userName,password);
 		} catch (SQLException e) {
-			log.error("Connection Failed " + e.getMessage());
+			//
+			try
+			{
+				// Dimitri, place your DB password and connection string here so the backend will also work for on your side
+				password = "";
+				connectionString = "";
+				conn = DriverManager.getConnection(connectionString,userName,password);
+			}
+			catch(SQLException e2)
+			{
+				log.error("Connection Failed " + e2.getMessage());
+			}
 		}
 	}
 	
